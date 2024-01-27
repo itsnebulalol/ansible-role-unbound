@@ -146,28 +146,29 @@
   check_mode: no
   ignore_errors: "{{ ansible_check_mode }}"
 
-# SELinux
-- name: Configure ports for SELinux (install policycoreutils-python)
-  package:
-    name: policycoreutils-python  # install semanage
-    state: present
-  when: ansible_selinux.status is defined and ansible_selinux.status != "Missing selinux Python library"
+## SELinux
+## Seems to not work on modern Debian, leaving out for now
+# - name: Configure ports for SELinux (install policycoreutils-python)
+#   package:
+#     name: policycoreutils-python  # install semanage
+#     state: present
+#   when: ansible_selinux.status is defined and ansible_selinux.status != "Missing selinux Python library"
 
-- name: Configure ports for SELinux (mark udp port for dns)
-  seport:
-    ports: "{{unbound.server.port}}"
-    proto: udp
-    setype: dns_port_t
-    state: present
-  when: ansible_selinux.status is defined and ansible_selinux.status != "Missing selinux Python library"
+# - name: Configure ports for SELinux (mark udp port for dns)
+#   seport:
+#     ports: "{{unbound.server.port}}"
+#     proto: udp
+#     setype: dns_port_t
+#     state: present
+#   when: ansible_selinux.status is defined and ansible_selinux.status != "Missing selinux Python library"
 
-- name: Configure ports for SELinux (mark tcp port for dns)
-  seport:
-    ports: "{{unbound.server.port}}"
-    proto: tcp
-    setype: dns_port_t
-    state: present
-  when: ansible_selinux.status is defined and ansible_selinux.status != "Missing selinux Python library"
+# - name: Configure ports for SELinux (mark tcp port for dns)
+#   seport:
+#     ports: "{{unbound.server.port}}"
+#     proto: tcp
+#     setype: dns_port_t
+#     state: present
+#   when: ansible_selinux.status is defined and ansible_selinux.status != "Missing selinux Python library"
 
 - name: Create /dev folder to chroot
   file:
